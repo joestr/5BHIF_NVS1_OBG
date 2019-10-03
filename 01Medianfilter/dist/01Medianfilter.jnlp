@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="01Medianfilter.jnlp">
+  <information>
+    <title>01Medianfilter</title>
+    <vendor>Joel</vendor>
+    <description>null</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="01Medianfilter.jar" size="6447" download="eager" />
+  </resources>
+  <jfx:javafx-desc  width="800" height="600" main-class="pkg01medianfilter.Main"  name="01Medianfilter" />
+  <update check="always"/>
+</jnlp>
