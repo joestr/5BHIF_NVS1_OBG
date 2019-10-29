@@ -17,8 +17,8 @@ import java.util.logging.Logger;
  */
 public class SocketConnection extends Thread {
     
-    private Queue<String> messagesToSend;
-    private Queue<String> receivedMessages;
+    private Queue<byte[]> messagesToSend;
+    private Queue<byte[]> receivedMessages;
     
     ServerSocket serverSocket;
   
@@ -33,25 +33,23 @@ public class SocketConnection extends Thread {
             
             DataOutputStream socketOut = new DataOutputStream(socket.getOutputStream());
             BufferedReader socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                socketOut.writeBytes("hu");
-                
-                
-                String receivedMessage = socketIn.readLine();
-                
-                if(receivedMessage != null) {
-                    System.out.println(receivedMessage);
-                }
+
+            String receivedMessage = socketIn.readLine();
+
+            if(receivedMessage != null) {
+                System.out.println(receivedMessage);
+            }
             
         } catch (Exception ex) {
             Logger.getLogger(SocketConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public Queue<String> getMessagesToSend() {
+    public Queue<byte[]> getMessagesToSend() {
         return messagesToSend;
     }
 
-    public Queue<String> getReceivedMessages() {
+    public Queue<byte[]> getReceivedMessages() {
         return receivedMessages;
     }    
 }
