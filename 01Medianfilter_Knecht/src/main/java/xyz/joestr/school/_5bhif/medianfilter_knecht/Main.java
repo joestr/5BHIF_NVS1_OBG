@@ -5,6 +5,7 @@
  */
 package xyz.joestr.school._5bhif.medianfilter_knecht;
 
+import com.google.gson.Gson;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -14,7 +15,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
-import java.util.Arrays;
 import javax.imageio.ImageIO;
 import org.apache.commons.math3.stat.descriptive.rank.Median;
 
@@ -36,11 +36,12 @@ public class Main {
         
         byte[] bytes = socket.getInputStream().readAllBytes();
         
-        if(bytes[0] == 1 || bytes[0] == 2 || bytes[0] == 3) {
+        ImageDTO imagedata = new Gson().fromJson(new String(bytes), ImageDTO.class);
+        
+        
+        if(imagedata.getFilter() == 1 || imagedata.getFilter() == 2 || imagedata.getFilter() == 3) {
             
-            byte[] picbytes = Arrays.copyOfRange(bytes, 1, bytes.length);
-            
-            BufferedImage bmp = ImageIO.read(new ByteArrayInputStream(picbytes));
+            BufferedImage bmp = ImageIO.read(new ByteArrayInputStream(imagedata.getBytes()));
             
             for (int y = 0; y < bmp.getHeight(); y++){
                 for (int x = 0; x < bmp.getWidth(); x++){
@@ -48,9 +49,9 @@ public class Main {
                     int rgb = bmp.getRGB(x, y);
                     Color c = new Color(bmp.getRGB(x, y));
                     Color newC = new Color(
-                        bytes[0] == 1 ? 0 : c.getRed(),
-                        bytes[0] == 2 ? 0 : c.getGreen(),
-                        bytes[0] == 3 ? 0 : c.getBlue(),
+                        imagedata.getFilter() == 1 ? 0 : c.getRed(),
+                        imagedata.getFilter() == 2 ? 0 : c.getGreen(),
+                        imagedata.getFilter() == 3 ? 0 : c.getBlue(),
                         c.getAlpha()
                     );
                     bmp.setRGB(x, y, newC.getRGB());
@@ -63,18 +64,39 @@ public class Main {
             
             outToServer.write(byteArray, 0, byteArray.length);
             socket.close();
-        } else if(bytes[0] == 4) {
+        } else if(imagedata.getFilter() == 4) {
             
-            byte[] picbytes = Arrays.copyOfRange(bytes, 2, bytes.length);
+            BufferedImage bmp = ImageIO.read(new ByteArrayInputStream(imagedata.getBytes()));
             
-            BufferedImage bmp = ImageIO.read(new ByteArrayInputStream(picbytes));
-            
-            int r = bytes[1];
+            int r = imagedata.getReadius();
             
             int runex = 0 + 1 + 2 * r;
             
-            for (int y = 0; y < bmp.getHeight(); y++){
-                for (int x = 0; x < bmp.getWidth(); x++){
+            /**
+             * 0 -> bottom
+             * 1 -> top
+             * 2 -> sandwich
+             * 3 -> whole pic
+             */
+            
+            int tmpSPBottom = 0;
+            int tmpSPTop = 0;
+            
+            if(imagedata.getStripePosition() == 0) {
+                tmpSPBottom = imagedata.getReadius();
+            }
+            
+            if(imagedata.getStripePosition() == 1) {
+                tmpSPTop = imagedata.getReadius();
+            }
+            
+            if(imagedata.getStripePosition() == 2) {
+                tmpSPBottom = imagedata.getReadius();
+                tmpSPTop = imagedata.getReadius();
+            }
+            
+            for (int y = 0 + tmpSPBottom; y < imagedata.getHeight() - tmpSPTop; y++){
+                for (int x = 0; x < imagedata.getWidth(); x++){
                     double bv[] = new double[runex * runex];
                     double rv[] = new double[runex * runex];
                     double gv[] = new double[runex * runex];
