@@ -14,7 +14,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousServerSocketChannel;
+import java.nio.channels.AsynchronousSocketChannel;
+import java.nio.channels.CompletionHandler;
+import java.util.concurrent.Future;
 import javax.imageio.ImageIO;
 import org.apache.commons.math3.stat.descriptive.rank.Median;
 
@@ -30,14 +37,13 @@ public class Main {
     public static void main(String[] args) throws IOException {
         
         BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
-        Socket socket = new Socket("192.168.197.8", 55555);
+        Socket socket = new Socket("192.168.193.199", 55555);
         DataOutputStream outToServer = new DataOutputStream(socket.getOutputStream());
         //BufferedReader inFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         
         byte[] bytes = socket.getInputStream().readAllBytes();
         
         ImageDTO imagedata = new Gson().fromJson(new String(bytes), ImageDTO.class);
-        
         
         if(imagedata.getFilter() == 1 || imagedata.getFilter() == 2 || imagedata.getFilter() == 3) {
             
