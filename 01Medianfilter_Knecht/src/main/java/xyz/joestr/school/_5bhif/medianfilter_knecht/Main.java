@@ -41,9 +41,16 @@ public class Main {
         DataOutputStream outToServer = new DataOutputStream(socket.getOutputStream());
         //BufferedReader inFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         
-        byte[] bytes = socket.getInputStream().readAllBytes();
+        byte[] bytes = socket.getInputStream().readNBytes(4);
         
-        ImageDTO imagedata = new Gson().fromJson(new String(bytes), ImageDTO.class);
+        bytes[0] = (byte) (bytes[0] & 0xFF);
+        bytes[1] = (byte) (bytes[1] & 0xFF);
+        bytes[2] = (byte) (bytes[2] & 0xFF);
+        bytes[3] = (byte) (bytes[3] & 0xFF);
+        
+        byte[] imagedtobytes = socket.getInputStream().readNBytes(Integer.parseInt(String.valueOf(ByteBuffer.wrap(bytes).getInt())));
+        
+        ImageDTO imagedata = new Gson().fromJson(new String(imagedtobytes), ImageDTO.class);
         
         if(imagedata.getFilter() == 1 || imagedata.getFilter() == 2 || imagedata.getFilter() == 3) {
             
