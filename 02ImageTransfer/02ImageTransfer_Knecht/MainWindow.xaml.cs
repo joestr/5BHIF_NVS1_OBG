@@ -59,6 +59,8 @@ namespace Kneeecht
 
                 Bitmap bmp = MakeBitmap(imageDto.width, imageDto.height, imageDto.bytes);
 
+                BitmapToImageSource(bmp);
+
                 for (int y = 0; y < bmp.Height; y++)
                 {
                     for (int x = 0; x < bmp.Width; x++)
