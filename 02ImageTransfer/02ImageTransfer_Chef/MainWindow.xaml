@@ -1,0 +1,50 @@
+﻿<Window x:Class="SplittedImageFilter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SplittedImageFilter"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="114*"/>
+            <RowDefinition Height="277*"/>
+            <RowDefinition Height="28*"/>
+        </Grid.RowDefinitions>
+
+        <Menu Margin="0,0,0,39">
+            <MenuItem Header="File">
+                <MenuItem Header="Open" Click="BtnOpenFile_Click"/>
+                <MenuItem Header="Export" Click="BtnExportFile_Click" />
+                <Separator />
+                <MenuItem Header="Exit" />
+            </MenuItem>
+            <MenuItem Header="Filter">
+                <MenuItem Header="Rot" Click="BtnApply_Click" Tag="0"></MenuItem>
+                <MenuItem Header="Grün" Click="BtnApply_Click" Tag="1"></MenuItem>
+                <MenuItem Header="Blau" Click="BtnApply_Click" Tag="2"></MenuItem>
+                <Separator/>
+                <MenuItem Header="Medianfilter" Click="BtnApply_Click" Tag="3"></MenuItem>
+            </MenuItem>
+        </Menu>
+
+        <ProgressBar x:Name="progressBar" HorizontalAlignment="Stretch" Height="19" Margin="0,9,0,0" VerticalAlignment="Top" Grid.Row="2"/>
+        <Grid Height="348" Margin="10,0,10,-43" VerticalAlignment="Top" HorizontalAlignment="Stretch" Grid.Row="1" Grid.RowSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="289*"/>
+                <RowDefinition Height="59*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="387*"/>
+                <ColumnDefinition Width="385*"/>
+            </Grid.ColumnDefinitions>
+            <Image x:Name="inputImage"  HorizontalAlignment="Stretch" Margin="10" VerticalAlignment="Stretch" Grid.Column="0"/>
+            <Image x:Name="outputImage"  HorizontalAlignment="Stretch" Margin="10" VerticalAlignment="Stretch" Grid.Column="1" />
+        </Grid>
+        <Label x:Name="lblProgress" Content="Progress: -" HorizontalAlignment="Left" Margin="625,27,0,0" VerticalAlignment="Top" Width="157" Height="27"/>
+        <TextBox x:Name="txtRadius" HorizontalAlignment="Left" Height="23" Margin="60,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Label x:Name="label" Content="Radius" HorizontalAlignment="Left" Margin="10,27,0,0" VerticalAlignment="Top" Width="50" Height="26"/>
+        <TextBox x:Name="TextStatus" HorizontalAlignment="Left" Height="41" Margin="0,68,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="782"/>
+    </Grid>
+</Window>
