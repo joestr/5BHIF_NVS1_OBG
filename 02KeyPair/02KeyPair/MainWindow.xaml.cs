@@ -29,6 +29,8 @@ namespace _02KeyPair
 
         public void generateKeyPair()
         {
+            RSA
+
             var rsa = new RSACryptoServiceProvider(2048);
 
             var privateKey = rsa.ToXmlString(true);
@@ -42,6 +44,8 @@ namespace _02KeyPair
 
             ExportPrivateKey(rsa, prtw); //openssl pkcs8 -topk8 -inform PEM -outform PEM -in priv1.pem -out priv8.pem -nocrypt
             ExportPublicKey(rsa, putw);
+
+            
 
             this.textbox_privatekey.Text = prtw.ToString();
             this.textbox_publickey.Text = putw.ToString();
